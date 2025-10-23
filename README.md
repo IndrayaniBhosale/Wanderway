@@ -72,6 +72,10 @@ cd WanderWay
 
 ![FavoritesScreen](readme_assets/favorites.png)
 
+### Share Screen
+
+![ShareScreen](readme_assets/share.png)
+
 ### Search Demo
 
 ![SearchDemo](readme_assets/search.png)
