@@ -74,7 +74,7 @@ cd WanderWay
 
 ### Share Screen
 
-![ShareScreen](readme_assets/share.png)
+![Share Screen](readme_assets/share.png)
 
 ### Search Demo
 
