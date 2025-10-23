@@ -15,6 +15,7 @@ Built with **Kotlin**, **MVVM architecture**, and **Jetpack Compose**, it provid
 | **Details Screen** | View destination information, top attractions, and an animated️ “Add to Favorites” button. |
 | **Favorites Screen** | Manage and revisit saved travel destinations in a fully scrollable list. |
 | **Search Bar** | Instantly filter destinations by name or country. |
+| **Share Screen** | Share the attraction with family and friends. |
 | **Bottom Navigation** | Seamlessly switch between Home and Favorites. |
 | **State Management** | ViewModel + Compose State handle all favorite toggles and data dynamically. |
 | **Material 3 Design** | Clean, modern interface following Android’s latest design system. |
@@ -91,7 +92,7 @@ cd WanderWay
 * Integrate real travel APIs (Google Places / TripAdvisor)
 * Add **Room Database** or **DataStore** for persistent favorites
 * Add **Splash / Intro Animations**
-* Include “Plan My Trip” or “Share Destination” features
+* Include “Plan My Trip” feature
 
 ---
 
