@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -43,12 +44,7 @@ fun HomeScreen(navController: NavController, viewModel: WanderwayViewModel) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
-            contentPadding = PaddingValues(
-                top = 8.dp,
-                start = 16.dp,
-                end = 16.dp,
-                bottom = 96.dp // Space for bottom nav
-            )
+            contentPadding = PaddingValues(16.dp)
         ) {
             item {
                 OutlinedTextField(
@@ -61,13 +57,26 @@ fun HomeScreen(navController: NavController, viewModel: WanderwayViewModel) {
                 )
             }
 
-            items(filtered) { dest ->
-                DestinationCard(
-                    name = dest.name,
-                    country = dest.country,
-                    imageRes = dest.imageRes
-                ) {
-                    navController.navigate("details/${dest.id}")
+            if (filtered.isEmpty()) {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillParentMaxSize()
+                            .padding(top = 40.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("No destinations found!", style = MaterialTheme.typography.bodyLarge)
+                    }
+                }
+            } else {
+                items(filtered) { dest ->
+                    DestinationCard(
+                        name = dest.name,
+                        country = dest.country,
+                        imageRes = dest.imageRes
+                    ) {
+                        navController.navigate("details/${dest.id}")
+                    }
                 }
             }
         }

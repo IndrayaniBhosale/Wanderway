@@ -1,5 +1,6 @@
 package com.example.wanderway.ui.screens
 
+import android.content.Intent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
@@ -9,17 +10,19 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.wanderway.viewmodel.WanderwayViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,6 +32,9 @@ fun DetailsScreen(
     id: Int
 ) {
     val destination = viewModel.getDestinationById(id) ?: return
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -38,9 +44,24 @@ fun DetailsScreen(
                     TextButton(onClick = { navController.popBackStack() }) {
                         Text("Back")
                     }
+                },
+                actions = {
+                    IconButton(onClick = {
+                        val intent = Intent(Intent.ACTION_SEND).apply {
+                            type = "text/plain"
+                            putExtra(
+                                Intent.EXTRA_TEXT,
+                                "Check out ${destination.name} in ${destination.country}! 🏝️"
+                            )
+                        }
+                        context.startActivity(Intent.createChooser(intent, "Share via"))
+                    }) {
+                        Icon(Icons.Default.Share, contentDescription = "Share")
+                    }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { padding ->
         Column(
             modifier = Modifier
@@ -88,7 +109,14 @@ fun DetailsScreen(
                 )
 
                 Button(
-                    onClick = { viewModel.toggleFavorite(destination.id) },
+                    onClick = {
+                        viewModel.toggleFavorite(destination.id)
+                        coroutineScope.launch {
+                            snackbarHostState.showSnackbar(
+                                if (!isFav) "Added to Favorites ❤️" else "Removed from Favorites"
+                            )
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Icon(

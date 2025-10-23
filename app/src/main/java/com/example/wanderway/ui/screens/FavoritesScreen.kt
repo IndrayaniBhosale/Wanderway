@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,22 +34,33 @@ fun FavoritesScreen(navController: NavController, viewModel: WanderwayViewModel)
         }
     ) { padding ->
         if (favorites.isEmpty()) {
+            // Empty-state with icon
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding),
                 contentAlignment = Alignment.Center
             ) {
-                Text("No favorites added yet!")
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(
+                        Icons.Outlined.FavoriteBorder,
+                        contentDescription = "Empty Favorites",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(72.dp)
+                    )
+                    Spacer(Modifier.height(12.dp))
+                    Text(
+                        "No favorites added yet!",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
             }
         } else {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding),
-                contentPadding = PaddingValues(
-                    start = 16.dp, end = 16.dp, top = 8.dp, bottom = 96.dp
-                )
+                contentPadding = PaddingValues(16.dp)
             ) {
                 items(favorites) { dest ->
                     Card(
@@ -56,7 +68,8 @@ fun FavoritesScreen(navController: NavController, viewModel: WanderwayViewModel)
                             .fillMaxWidth()
                             .padding(vertical = 8.dp)
                             .clickable { navController.navigate("details/${dest.id}") },
-                        elevation = CardDefaults.cardElevation(6.dp)
+                        elevation = CardDefaults.cardElevation(6.dp),
+                        shape = MaterialTheme.shapes.large
                     ) {
                         Column(Modifier.padding(12.dp)) {
                             Text(dest.name, fontWeight = FontWeight.Bold)
